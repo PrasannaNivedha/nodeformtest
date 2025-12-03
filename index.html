@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <title>Form made & read</title>
+</head>
+
+<body>
+<form>
+    <label for="naam">Enter name</label>
+    <input type="text" id="naam"><br><br>
+    <label for="numb">Enter number</label>
+    <input type="number" id="numb"><br><br>
+    <button id="submito" type="button">Submit Entry</button><br><br>
+    <button id="showo" type="button">Show all data</button>
+    <h3 id="display"></h3>
+</form>
+
+<script defer>
+    document.getElementById("submito").addEventListener("click", funky);
+    document.getElementById("showo").addEventListener("click", binky);
+
+    function funky()
+    {
+        
+        let nameobj = document.getElementById("naam").value;
+        let numberobj = document.getElementById("numb").value;
+        let storage = {name: nameobj, number: numberobj};
+
+        //testing loggers:
+        console.log("Data entered successfully");
+        console.log(storage);
+
+        //sending data to node js to save in JSON file:
+        fetch("/save", {method: "POST", headers: {"Content-Type": "application/json" }, body: JSON.stringify(storage)})
+        .then(res => res.text())
+        .then(msg => console.log("Server says: ", msg));
+
+        document.getElementById("naam").value = '';
+        document.getElementById("numb").value = '';
+
+    }
+
+    function binky()
+    {
+        fetch("/retrieve")
+        .then(res => res.text())
+        .then(data => document.getElementById("display").innerHTML = data)
+        .catch(err => document.getElementById("display").innerHTML = err+"No data found")
+    }
+
+
+</script>
+</body>
