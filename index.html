@@ -18,6 +18,8 @@
     document.getElementById("submito").addEventListener("click", funky);
     document.getElementById("showo").addEventListener("click", binky);
 
+    const backendURL = "https://nodeformtest.onrender.com"
+
     function funky()
     {
         
@@ -30,7 +32,7 @@
         console.log(storage);
 
         //sending data to node js to save in JSON file:
-        fetch("/save", {method: "POST", headers: {"Content-Type": "application/json" }, body: JSON.stringify(storage)})
+        fetch( backendURL + "/save", {method: "POST", headers: {"Content-Type": "application/json" }, body: JSON.stringify(storage)})
         .then(res => res.text())
         .then(msg => console.log("Server says: ", msg));
 
@@ -41,7 +43,7 @@
 
     function binky()
     {
-        fetch("/retrieve")
+        fetch( backendURL + "/retrieve")
         .then(res => res.text())
         .then(data => document.getElementById("display").innerHTML = data)
         .catch(err => document.getElementById("display").innerHTML = err+"No data found")
